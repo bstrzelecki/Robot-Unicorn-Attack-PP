@@ -20,10 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Prop.cpp" />
+    <ClCompile Include="RenderBatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="cs8x8.bmp" />
     <Image Include="eti.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Prop.h" />
+    <ClInclude Include="RenderBatch.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

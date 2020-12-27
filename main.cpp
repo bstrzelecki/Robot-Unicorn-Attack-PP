@@ -6,6 +6,7 @@
 extern "C" {
 #include"./SDL2-2.0.10/include/SDL.h"
 #include"./SDL2-2.0.10/include/SDL_main.h"
+#include "RenderBatch.h"
 }
 
 #define SCREEN_WIDTH	640
@@ -204,6 +205,9 @@ int main(int argc, char **argv) {
 
 		distance += etiSpeed * delta;
 
+		RenderBatch batch(screen, charset);
+		
+		
 		SDL_FillRect(screen, NULL, czarny);
 
 		DrawSurface(screen, eti,
