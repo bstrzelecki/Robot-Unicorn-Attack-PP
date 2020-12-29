@@ -29,6 +29,8 @@ void RenderBatch::DrawSurface(SDL_Surface* sprite, int x, int y) {
 	SDL_BlitSurface(sprite, NULL, screen, &dest);
 }
 void RenderBatch::DrawPixel(int x, int y, Uint32 color) {
+	if (x >= SCREEN_WIDTH || x < 0) return;
+	if (y >= SCREEN_HEIGHT || y < 0) return;
 	int bpp = screen->format->BytesPerPixel;
 	Uint8* p = (Uint8*)screen->pixels + y * screen->pitch + x * bpp;
 	*(Uint32*)p = color;

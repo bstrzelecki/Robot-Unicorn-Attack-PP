@@ -1,5 +1,6 @@
 #pragma once
 #include "SDL2-2.0.10/include/SDL_surface.h"
+#include "statics.h"
 class RenderBatch
 {
 public:

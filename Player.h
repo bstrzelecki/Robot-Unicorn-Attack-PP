@@ -1,14 +1,17 @@
 #pragma once
 #include "Prop.h"
+#include "statics.h"
 class Player : public Prop
 {
 public:
 	Player();
 	~Player();
-	void Render(double delta, RenderBatch* batch);
-	void Update(double delta);
+	void Move(int deltaY);
+	void Render(double delta, RenderBatch* batch) override;
+	void Update(double delta) override;
+	int height;
 private:
 	SDL_Surface* sprite;
-	int height;
+	int moveBuffer = 0;
 };
 

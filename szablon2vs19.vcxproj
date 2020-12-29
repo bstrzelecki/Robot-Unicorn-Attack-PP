@@ -19,10 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArrowKeyController.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Prop.cpp" />
     <ClCompile Include="RenderBatch.cpp" />
+    <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Desktop\unicorn\player.bmp" />
@@ -30,9 +34,16 @@
     <Image Include="eti.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrowKeyController.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Prop.h" />
     <ClInclude Include="RenderBatch.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="statics.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
