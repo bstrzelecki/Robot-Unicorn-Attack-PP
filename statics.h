@@ -3,7 +3,7 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-#define XPOSITION 65
+#define XPOSITION 85
 #define ABSTRACT =0
 
 typedef enum {

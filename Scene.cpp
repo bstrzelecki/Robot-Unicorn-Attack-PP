@@ -45,7 +45,9 @@ void Scene::Render(double delta, RenderBatch* batch)
 void Scene::Update(double delta)
 {
 	for (int i = 0; i < platformCount; i++) {
-		if (platforms[i]->TestCollision(player->height))
-			printf("Collision!!!!!");
+		if (platforms[i]->TestCollision(player->bottomCollision.y) && !platforms[i]->TestCollision(player->collisionThreshold.y))
+		{
+			player->height = platforms[i]->Position.y - player->bottomCollision.y + player->height;
+		}
 	}
 }

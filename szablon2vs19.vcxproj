@@ -22,6 +22,7 @@
     <ClCompile Include="ArrowKeyController.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Hud.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="ArrowKeyController.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Hud.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />

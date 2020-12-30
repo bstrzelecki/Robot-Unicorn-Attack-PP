@@ -2,6 +2,74 @@
 
 Game::Game()
 {
+	Init();
+}
+
+Game::~Game()
+{
+	Dispose();
+}
+
+void Game::Run()
+{
+
+	SDL_Event event;
+	double t1, t2, delta;
+	t1 = SDL_GetTicks();
+	int quit = 0;
+	int restartFlag = 0;
+	
+	player = new Player();
+	scene = new Scene(player);
+	input = new ArrowKeyController(player, scene);
+	hud = new Hud();
+
+	while (!quit) {
+		t2 = SDL_GetTicks();
+
+		delta = (t2 - t1) * 0.001;
+		t1 = t2;
+
+		// background
+		SDL_FillRect(screen, NULL, 0x000000);
+
+		RenderBatch batch(screen, charset);
+		player->Update(delta);
+		scene->Update(delta);
+
+		hud->Render(delta, &batch);
+		scene->Render(delta, &batch);
+		player->Render(delta, &batch);
+
+
+		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
+		SDL_RenderCopy(renderer, scrtex, NULL, NULL);
+		SDL_RenderPresent(renderer);
+
+		while (SDL_PollEvent(&event)) {
+			input->Resolve(event);
+			switch (event.type) {
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+						case SDLK_ESCAPE:
+							quit = 1;
+						case SDLK_n:
+							quit = 1;
+							restartFlag = 1;
+					}
+			}
+		}
+	}
+	if (restartFlag == 1) {
+		delete player;
+		delete scene;
+		delete input;
+		Run();
+	}
+}
+
+void Game::Init()
+{
 	int rc;
 	double delta;
 
@@ -49,13 +117,12 @@ Game::Game()
 	SDL_SetColorKey(charset, true, 0x000000);
 
 
-	player = new Player();
-	scene = new Scene(player);
-	input = new ArrowKeyController(player, scene);
 }
-
-Game::~Game()
+void Game::Dispose()
 {
+	delete player;
+	delete scene;
+	delete input;
 	SDL_FreeSurface(charset);
 	SDL_FreeSurface(screen);
 	SDL_DestroyTexture(scrtex);
@@ -63,37 +130,4 @@ Game::~Game()
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 
-}
-
-void Game::Run()
-{
-	SDL_Event event;
-	double t1, t2, delta;
-	t1 = SDL_GetTicks();
-	int quit = 0;
-	while (!quit) {
-		t2 = SDL_GetTicks();
-
-		delta = (t2 - t1) * 0.001;
-		t1 = t2;
-
-		// background
-		SDL_FillRect(screen, NULL, 0x000000);
-
-		RenderBatch batch(screen, charset);
-
-		player->Update(delta);
-		player->Render(delta, &batch);
-
-		scene->Update(delta);
-		scene->Render(delta, &batch);
-
-		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
-		SDL_RenderCopy(renderer, scrtex, NULL, NULL);
-		SDL_RenderPresent(renderer);
-
-		while (SDL_PollEvent(&event)) {
-			input->Resolve(event);
-		}
-	}
 }
