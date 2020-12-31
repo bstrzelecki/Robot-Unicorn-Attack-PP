@@ -11,6 +11,12 @@ typedef enum {
 	Down
 }Direction;
 
+typedef enum {
+	Jump,
+	Fall,
+	SlowFall
+} JumpMode;
+
 typedef struct Point{
 	int x;
 	int y;

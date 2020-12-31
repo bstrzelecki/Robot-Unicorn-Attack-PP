@@ -28,6 +28,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderBatch.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ZXController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Desktop\unicorn\player.bmp" />
@@ -46,6 +47,7 @@
     <ClInclude Include="RenderBatch.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="statics.h" />
+    <ClInclude Include="ZXController.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

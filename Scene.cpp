@@ -10,7 +10,7 @@ Scene::Scene(Player* player)
 		platformCount = 0;
 		return;
 	}
-	platforms[0] = new Platform(Point(50, 80));
+	platforms[0] = new Platform(Point(150, 80));
 	platforms[1] = new Platform(Point(500, 180));
 	platforms[2] = new Platform(Point(250, 380));
 }
@@ -44,9 +44,11 @@ void Scene::Render(double delta, RenderBatch* batch)
 
 void Scene::Update(double delta)
 {
+	Move(scrollSpeed);
 	for (int i = 0; i < platformCount; i++) {
 		if (platforms[i]->TestCollision(player->bottomCollision.y) && !platforms[i]->TestCollision(player->collisionThreshold.y))
 		{
+			player->RestoreJumps();
 			player->height = platforms[i]->Position.y - player->bottomCollision.y + player->height;
 		}
 	}

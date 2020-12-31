@@ -21,7 +21,7 @@ void Game::Run()
 	
 	player = new Player();
 	scene = new Scene(player);
-	input = new ArrowKeyController(player, scene);
+	input = new ZXController(player);
 	hud = new Hud();
 	RenderBatch batch(screen, charset);
 	while (!quit) {
@@ -40,9 +40,11 @@ void Game::Run()
 					switch (event.key.keysym.sym) {
 						case SDLK_ESCAPE:
 							quit = 1;
+							break;
 						case SDLK_n:
 							quit = 1;
 							restartFlag = 1;
+							break;
 					}
 			}
 		}

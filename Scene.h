@@ -13,6 +13,7 @@ public:
 	virtual void Render(double delta, RenderBatch* batch) override;
 	virtual void Update(double delta) override;
 private:
+	int scrollSpeed = 1;
 	int loopWidth;
 	int platformCount = 0;
 	Player* player;
