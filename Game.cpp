@@ -23,7 +23,7 @@ void Game::Run()
 	scene = new Scene(player);
 	input = new ArrowKeyController(player, scene);
 	hud = new Hud();
-
+	RenderBatch batch(screen, charset);
 	while (!quit) {
 		t2 = SDL_GetTicks();
 
@@ -32,19 +32,6 @@ void Game::Run()
 
 		// background
 		SDL_FillRect(screen, NULL, 0x000000);
-
-		RenderBatch batch(screen, charset);
-		player->Update(delta);
-		scene->Update(delta);
-
-		hud->Render(delta, &batch);
-		scene->Render(delta, &batch);
-		player->Render(delta, &batch);
-
-
-		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
-		SDL_RenderCopy(renderer, scrtex, NULL, NULL);
-		SDL_RenderPresent(renderer);
 
 		while (SDL_PollEvent(&event)) {
 			input->Resolve(event);
@@ -59,6 +46,20 @@ void Game::Run()
 					}
 			}
 		}
+
+
+
+		player->Update(delta);
+		scene->Update(delta);
+		hud->Update(delta);
+		
+		hud->Render(delta, &batch);
+		scene->Render(delta, &batch);
+		player->Render(delta, &batch);
+
+		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
+		SDL_RenderCopy(renderer, scrtex, NULL, NULL);
+		SDL_RenderPresent(renderer);
 	}
 	if (restartFlag == 1) {
 		delete player;

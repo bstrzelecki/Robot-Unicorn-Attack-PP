@@ -13,7 +13,6 @@ public:
 	~Game();
 	void Run();
 	void Init();
-	void Restart();
 	void Dispose();
 private:
 	Scene* scene;

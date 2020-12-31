@@ -1,6 +1,7 @@
 #pragma once
 #include "Prop.h"
 #include "statics.h"
+#include <cstdio>
 class Player : public Prop
 {
 public:

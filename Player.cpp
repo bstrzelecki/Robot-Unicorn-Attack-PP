@@ -20,10 +20,12 @@ void Player::Render(double delta, RenderBatch* batch) {
 	batch->DrawSurface(sprite, XPOSITION - 20, height);
 }
 void Player::Update(double delta) {
+	height += moveBuffer * (delta + 1);
 	bottomCollision = Point(XPOSITION, height + 40);
 	collisionThreshold = Point(XPOSITION, height + 25);
-	height += moveBuffer * (delta + 1);
 	height = height > 0 ? height : 0;
-	height = height < SCREEN_HEIGHT? height: SCREEN_HEIGHT;
+	if (bottomCollision.y > SCREEN_HEIGHT) {
+		height = SCREEN_HEIGHT - bottomCollision.y + height;
+	}
 	moveBuffer = 0;
 }
