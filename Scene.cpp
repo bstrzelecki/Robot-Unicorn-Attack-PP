@@ -35,6 +35,11 @@ void Scene::Move(int delta)
 
 }
 
+void Scene::SetScrollingSpeed(int speed)
+{
+	scrollSpeed = speed;
+}
+
 void Scene::Render(double delta, RenderBatch* batch)
 {
 	for (int i = 0; i < platformCount; i++) {
@@ -44,7 +49,9 @@ void Scene::Render(double delta, RenderBatch* batch)
 
 void Scene::Update(double delta)
 {
-	Move(scrollSpeed);
+	Move(scrollSpeed * player->isDashing?2:1);
+	if (player->isDashing)
+		return;
 	for (int i = 0; i < platformCount; i++) {
 		if (platforms[i]->TestCollision(player->bottomCollision.y) && !platforms[i]->TestCollision(player->collisionThreshold.y))
 		{

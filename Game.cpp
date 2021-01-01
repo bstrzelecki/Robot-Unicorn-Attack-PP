@@ -18,10 +18,16 @@ void Game::Run()
 	t1 = SDL_GetTicks();
 	int quit = 0;
 	int restartFlag = 0;
+
 	
 	player = new Player();
 	scene = new Scene(player);
-	input = new ZXController(player);
+	
+	Input* arrowInput = new ArrowKeyController(player, scene);
+	Input* defaultInput = new ZXController(player);
+	
+	input = defaultInput;
+	int currentInput = 0;
 	hud = new Hud();
 	RenderBatch batch(screen, charset);
 	while (!quit) {
@@ -45,7 +51,19 @@ void Game::Run()
 							quit = 1;
 							restartFlag = 1;
 							break;
-					}
+						case SDLK_d:
+							if (input == defaultInput) {
+								input = arrowInput;
+								player->SetGravity(0);
+								scene->SetScrollingSpeed(0);
+							}
+							else {
+								input = defaultInput;
+								player->SetGravity(2);
+								scene->SetScrollingSpeed(1);
+							}
+						}
+				break;
 			}
 		}
 

@@ -10,6 +10,7 @@ public:
 	Scene(Player* player);
 	~Scene();
 	void Move(int delta);
+	void SetScrollingSpeed(int speed);
 	virtual void Render(double delta, RenderBatch* batch) override;
 	virtual void Update(double delta) override;
 private:
