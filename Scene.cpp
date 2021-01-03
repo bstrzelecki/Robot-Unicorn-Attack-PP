@@ -3,7 +3,7 @@
 Scene::Scene(Player* player)
 {
 	this->player = player;
-	platformCount = 3;
+	platformCount = 6;
 	loopWidth = 700;
 	platforms = (Platform**)malloc(platformCount * sizeof(void*));
 	if (platforms == nullptr) {
@@ -13,6 +13,9 @@ Scene::Scene(Player* player)
 	platforms[0] = new Platform(Point(150, 80));
 	platforms[1] = new Platform(Point(500, 180));
 	platforms[2] = new Platform(Point(250, 380));
+	platforms[3] = new Platform(Point(1000, 800));
+	platforms[4] = new Platform(Point(2000, 1000));
+	platforms[5] = new Platform(Point(850, 380));
 }
 
 Scene::~Scene()
@@ -49,14 +52,20 @@ void Scene::Render(double delta, RenderBatch* batch)
 
 void Scene::Update(double delta)
 {
-	Move(scrollSpeed * player->isDashing?2:1);
+	Move(scrollSpeed * (player->isDashing?2:1));
 	if (player->isDashing)
 		return;
+	for (int i = 0; i < platformCount; i++) {
+		platforms[i]->Position.y = platforms[i]->startingPosition.y - player->height;
+	}
 	for (int i = 0; i < platformCount; i++) {
 		if (platforms[i]->TestCollision(player->bottomCollision.y) && !platforms[i]->TestCollision(player->collisionThreshold.y))
 		{
 			player->RestoreJumps();
-			player->height = platforms[i]->Position.y - player->bottomCollision.y + player->height;
+			player->ApplyMove(platforms[i]->Position.y - player->bottomCollision.y);
 		}
+	}
+	for (int i = 0; i < platformCount; i++) {
+		platforms[i]->Position.y = platforms[i]->startingPosition.y - player->height;
 	}
 }

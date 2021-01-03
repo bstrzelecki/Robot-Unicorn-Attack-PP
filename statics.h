@@ -3,6 +3,9 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
+#define SCENE_HEIGHT 1440
+#define MAX_OFFSET 240
+
 #define XPOSITION 85
 #define ABSTRACT =0
 

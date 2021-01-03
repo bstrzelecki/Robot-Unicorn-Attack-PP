@@ -14,11 +14,14 @@ public:
 	void Dash();
 	void SetGravity(int gracvity);
 	void StopJump();
+	void ApplyMove(int delta);
 	void RestoreJumps(int count = 2);
 	int height;
 	int isDashing = 0;
 	Point topCollision, bottomCollision, collisionThreshold;
+	int offset = 0;
 private:
+	int yPos = 0;
 	int isJumping=0;
 	int jumpRate = 2;
 	int canDash = 1;
@@ -26,7 +29,7 @@ private:
 	double smallJump = 0;
 	double maxDashTime = .4;
 	double currentJump = 1;
-	double maxJump = 450;
+	double maxJump = 2;
 	int gravity = 2;
 	int jumpCount = 2;
 	SDL_Surface* sprite;
