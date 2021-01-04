@@ -59,31 +59,10 @@ void Scene::Update(double delta)
 		platforms[i]->Position.y = platforms[i]->startingPosition.y - player->height;
 	}
 	for (int i = 0; i < platformCount; i++) {
-		if (platforms[i]->TestCollision(player->bottomCollision.y) && !platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
+		if (platforms[i]->TestCollision(player->bottomCollision.y) && !platforms[i]->TestCollision(player->collisionThreshold.y))
 		{
 			player->RestoreJumps();
 			player->ApplyMove(platforms[i]->Position.y - player->bottomCollision.y);
-		}
-		if (platforms[i]->TestCollision(player->topCollision.y) && !platforms[i]->TestCollision(player->topCollisionThreshold.y))
-		{
-			player->RestoreJumps();
-			player->ApplyMove(platforms[i]->Position.y + platforms[i]->Height - player->topCollision.y);
-		}
-		if (platforms[i]->TestCollision(player->bottomCollision.y) && platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
-		{
-			printf("Death\n");
-		}
-		if (platforms[i]->TestCollision(player->topCollision.y) && platforms[i]->TestCollision(player->topCollisionThreshold.y))
-		{
-			printf("Death\n");
-		}
-		if (!platforms[i]->TestCollision(player->bottomCollision.y) && platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
-		{
-			printf("Death\n");
-		}
-		if (!platforms[i]->TestCollision(player->topCollision.y) && platforms[i]->TestCollision(player->topCollisionThreshold.y))
-		{
-			printf("Death\n");
 		}
 	}
 	for (int i = 0; i < platformCount; i++) {
