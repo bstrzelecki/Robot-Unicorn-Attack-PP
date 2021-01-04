@@ -11,17 +11,19 @@ public:
 	void Render(double delta, RenderBatch* batch) override;
 	void Update(double delta) override;
 	void Jump();
-	void Dash();
-	void SetGravity(int gracvity);
 	void StopJump();
+	void Dash();
+	void StopDash();
+	void SetGravity(int gracvity);
 	void ApplyMove(int delta);
 	void RestoreJumps(int count = 2);
 	int height;
 	int isDashing = 0;
-	Point topCollision, bottomCollision, collisionThreshold;
+	Point topCollision, bottomCollision, bottomCollisionThreshold, topCollisionThreshold;
 	int offset = 0;
 private:
 	int yPos = 0;
+	int dashKey = 0;
 	int isJumping=0;
 	int jumpRate = 2;
 	int canDash = 1;
