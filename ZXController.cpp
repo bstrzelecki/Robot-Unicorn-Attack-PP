@@ -20,9 +20,12 @@ void ZXController::Resolve(SDL_Event e)
 			break;
 		case SDL_KEYUP:
 			switch (e.key.keysym.sym) {
-			case SDLK_z:
-				player->StopJump();
-				break;
+				case SDLK_z:
+					player->StopJump();
+					break;
+				case SDLK_x:
+					player->StopDash();
+					break;
 			}
 			break;
 

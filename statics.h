@@ -10,6 +10,13 @@
 #define ABSTRACT =0
 
 typedef enum {
+	GameMode,
+	Menu,
+	Death,
+	Score
+}State;
+
+typedef enum {
 	Up,
 	Down
 }Direction;

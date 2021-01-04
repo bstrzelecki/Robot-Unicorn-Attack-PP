@@ -7,13 +7,14 @@
 #include"./SDL2-2.0.10/include/SDL_main.h"
 #include "Hud.h"
 #include "ZXController.h"
-
+#include "GameStateManager.h"
 class Game
 {
 public:
 	Game();
 	~Game();
 	void Run();
+	void GameState(int delta, int* quit, int* restart);
 	void Init();
 	void Dispose();
 private:

@@ -16,7 +16,9 @@ void Player::Move(int deltaY)
 }
 void Player::Render(double delta, RenderBatch* batch) {
 	batch->DrawPixel(bottomCollision.x, bottomCollision.y, 0xFF0000);
-	batch->DrawPixel(collisionThreshold.x, collisionThreshold.y, 0xFF00FF);
+	batch->DrawPixel(bottomCollisionThreshold.x, bottomCollisionThreshold.y, 0xFF00FF);
+	batch->DrawPixel(topCollision.x, topCollision.y, 0xFF0000);
+	batch->DrawPixel(topCollisionThreshold.x, topCollisionThreshold.y, 0xFFFF00);
 
 	batch->DrawSurface(sprite, XPOSITION - 20, offset + SCREEN_HEIGHT/2);
 }
@@ -26,12 +28,15 @@ void Player::ApplyMove(int delta)
 	yPos += delta;
 	height = yPos;
 
+	topCollision = Point(XPOSITION, SCREEN_HEIGHT / 2 - 40 + offset);
+	topCollisionThreshold = Point(XPOSITION, SCREEN_HEIGHT / 2 - 25 + offset);
+
 	bottomCollision = Point(XPOSITION, SCREEN_HEIGHT / 2 + 40 + offset);
-	collisionThreshold = Point(XPOSITION, SCREEN_HEIGHT / 2 + 25 + offset);
+	bottomCollisionThreshold = Point(XPOSITION, SCREEN_HEIGHT / 2 + 25 + offset);
 
 	height = height > 0 ? height : 0;
-	if (bottomCollision.y > SCENE_HEIGHT) {
-		height = SCREEN_HEIGHT - bottomCollision.y + height;
+	if (height > SCENE_HEIGHT) {
+		height = SCENE_HEIGHT;
 	}
 	offset = yPos - height;
 }
@@ -76,12 +81,18 @@ void Player::Jump()
 
 void Player::Dash()
 {
-	if (isDashing || !canDash)
+	if (isDashing || !canDash || dashKey)
 		return;
 	currentDash = 0;
+	dashKey = 1;
 	isDashing = 1;
 	RestoreJumps(1);
 	canDash = 0;
+}
+
+void Player::StopDash()
+{
+	dashKey = 0;
 }
 
 void Player::SetGravity(int gravity)
