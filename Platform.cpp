@@ -4,6 +4,7 @@ Platform::Platform(Point start)
 {
 	Position = start;
 	Width = 600;
+	Height = 40;
 	startingPosition = start;
 	topCollider = new Collider(Width, Up);
 	bottomCollider = new Collider(Width, Down);
@@ -18,7 +19,7 @@ Platform::~Platform()
 int Platform::TestCollision(int playerY)
 {
 	if (topCollider->TestCollision(playerY, Position) &&
-		bottomCollider->TestCollision(playerY, Point(Position.x, Position.y + 40)))
+		bottomCollider->TestCollision(playerY, Point(Position.x, Position.y + Height)))
 		return 1;
 	else
 		return 0;

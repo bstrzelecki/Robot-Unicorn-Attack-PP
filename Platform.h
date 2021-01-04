@@ -13,6 +13,7 @@ public:
 	Point Position;
 	Point startingPosition;
 	int Width;
+	int Height;
 	virtual void Render(double delta, RenderBatch* batch) override;
 	virtual void Update(double delta) override;
 private:

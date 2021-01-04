@@ -13,7 +13,7 @@ Game::~Game()
 void Game::Run()
 {
 
-	SDL_Event event;
+
 	double t1, t2, delta;
 	t1 = SDL_GetTicks();
 	int quit = 0;
@@ -39,43 +39,45 @@ void Game::Run()
 		// background
 		SDL_FillRect(screen, NULL, 0x000000);
 
+
+		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			input->Resolve(event);
 			switch (event.type) {
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym) {
-						case SDLK_ESCAPE:
-							quit = 1;
-							break;
-						case SDLK_n:
-							quit = 1;
-							restartFlag = 1;
-							break;
-						case SDLK_d:
-							if (input == defaultInput) {
-								input = arrowInput;
-								player->SetGravity(0);
-								scene->SetScrollingSpeed(0);
-							}
-							else {
-								input = defaultInput;
-								player->SetGravity(2);
-								scene->SetScrollingSpeed(1);
-							}
-						}
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+					quit = 1;
+					break;
+				case SDLK_n:
+					quit = 1;
+					restartFlag = 1;
+					break;
+				case SDLK_d:
+					if (input == defaultInput) {
+						input = arrowInput;
+						player->SetGravity(0);
+						scene->SetScrollingSpeed(0);
+					}
+					else {
+						input = defaultInput;
+						player->SetGravity(2);
+						scene->SetScrollingSpeed(1);
+					}
+				}
 				break;
 			}
 		}
 
 
+			player->Update(delta);
+			scene->Update(delta);
+			hud->Update(delta);
 
-		player->Update(delta);
-		scene->Update(delta);
-		hud->Update(delta);
+			hud->Render(delta, &batch);
+			scene->Render(delta, &batch);
+			player->Render(delta, &batch);
 		
-		hud->Render(delta, &batch);
-		scene->Render(delta, &batch);
-		player->Render(delta, &batch);
 
 		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
 		SDL_RenderCopy(renderer, scrtex, NULL, NULL);
@@ -89,11 +91,11 @@ void Game::Run()
 	}
 }
 
+
 void Game::Init()
 {
 	int rc;
 	double delta;
-
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		printf("SDL_Init error: %s\n", SDL_GetError());
