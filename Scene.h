@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <cstdio>
 #include "Player.h"
-#include "GameStateManager.h"
 class Scene: public Prop
 {
 public:

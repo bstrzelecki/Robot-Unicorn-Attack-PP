@@ -39,7 +39,6 @@ void Game::Run()
 		// background
 		SDL_FillRect(screen, NULL, 0x000000);
 
-		State state = GameStateManager::GetState();
 
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
@@ -71,7 +70,6 @@ void Game::Run()
 		}
 
 
-		if (state == State::GameMode) {
 			player->Update(delta);
 			scene->Update(delta);
 			hud->Update(delta);
@@ -79,7 +77,7 @@ void Game::Run()
 			hud->Render(delta, &batch);
 			scene->Render(delta, &batch);
 			player->Render(delta, &batch);
-		}
+		
 
 
 		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
@@ -99,7 +97,6 @@ void Game::Init()
 {
 	int rc;
 	double delta;
-	GameStateManager::Initialize();
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		printf("SDL_Init error: %s\n", SDL_GetError());
