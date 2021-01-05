@@ -13,10 +13,11 @@ public:
 	Game();
 	~Game();
 	void Run();
-	void GameState(int delta, int* quit, int* restart);
+	void SetState(State state);
 	void Init();
 	void Dispose();
 private:
+	State currentState = State::ScoreScreen;
 	Scene* scene;
 	Player* player;
 	Input* input;

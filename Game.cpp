@@ -1,4 +1,7 @@
 #include "Game.h"
+#include "Menu.h"
+#include "Death.h"
+#include "FinalScore.h"
 
 Game::Game()
 {
@@ -25,7 +28,9 @@ void Game::Run()
 	
 	Input* arrowInput = new ArrowKeyController(player, scene);
 	Input* defaultInput = new ZXController(player);
-	
+	Menu menu;
+	Death death;
+	FinalScore finalScore;
 	input = defaultInput;
 	int currentInput = 0;
 	hud = new Hud();
@@ -39,35 +44,38 @@ void Game::Run()
 		// background
 		SDL_FillRect(screen, NULL, 0x000000);
 
-
 		SDL_Event event;
-		while (SDL_PollEvent(&event)) {
-			input->Resolve(event);
-			switch (event.type) {
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym) {
-				case SDLK_ESCAPE:
-					quit = 1;
-					break;
-				case SDLK_n:
-					quit = 1;
-					restartFlag = 1;
-					break;
-				case SDLK_d:
-					if (input == defaultInput) {
-						input = arrowInput;
-						player->SetGravity(0);
-						scene->SetScrollingSpeed(0);
+
+
+
+		if (currentState == State::GameScreen) {
+			while (SDL_PollEvent(&event)) {
+				input->Resolve(event);
+				switch (event.type) {
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+					case SDLK_ESCAPE:
+						quit = 1;
+						break;
+					case SDLK_n:
+						quit = 1;
+						restartFlag = 1;
+						break;
+					case SDLK_d:
+						if (input == defaultInput) {
+							input = arrowInput;
+							player->SetGravity(0);
+							scene->SetScrollingSpeed(0);
+						}
+						else {
+							input = defaultInput;
+							player->SetGravity(2);
+							scene->SetScrollingSpeed(1);
+						}
 					}
-					else {
-						input = defaultInput;
-						player->SetGravity(2);
-						scene->SetScrollingSpeed(1);
-					}
+					break;
 				}
-				break;
 			}
-		}
 
 
 			player->Update(delta);
@@ -77,8 +85,81 @@ void Game::Run()
 			hud->Render(delta, &batch);
 			scene->Render(delta, &batch);
 			player->Render(delta, &batch);
-		
+		}
 
+		if (currentState == State::MenuScreen) {
+			while (SDL_PollEvent(&event)) {
+				input->Resolve(event);
+				switch (event.type) {
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+						case SDLK_ESCAPE:
+							quit = 1;
+							break;
+						case SDLK_n:
+							quit = 1;
+							restartFlag = 1;
+							currentState = State::GameScreen;
+							break;
+					}
+					break;
+				}
+			}
+			menu.Render(delta, &batch);
+		}
+
+
+		if (currentState == State::DeathScreen) {
+			while (SDL_PollEvent(&event)) {
+				input->Resolve(event);
+				switch (event.type) {
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+						case SDLK_ESCAPE:
+							quit = 1;
+							break;
+						case SDLK_c:
+							quit = 1;
+							restartFlag = 1;
+							currentState = State::GameScreen;
+							break;
+						case SDLK_m:
+							quit = 1;
+							restartFlag = 1;
+							currentState = State::MenuScreen;
+							break;
+					}
+					break;
+				}
+			}
+			death.Render(delta, &batch);
+		}
+
+		if (currentState == State::ScoreScreen) {
+			while (SDL_PollEvent(&event)) {
+				input->Resolve(event);
+				switch (event.type) {
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+					case SDLK_ESCAPE:
+						quit = 1;
+						break;
+					case SDLK_c:
+						quit = 1;
+						restartFlag = 1;
+						currentState = State::GameScreen;
+						break;
+					case SDLK_m:
+						quit = 1;
+						restartFlag = 1;
+						currentState = State::MenuScreen;
+						break;
+					}
+					break;
+				}
+			}
+			finalScore.Render(delta, &batch);
+		}
 
 		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
 		SDL_RenderCopy(renderer, scrtex, NULL, NULL);
@@ -90,6 +171,22 @@ void Game::Run()
 		delete input;
 		Run();
 	}
+}
+
+void Game::SetState(State state)
+{
+	switch (state) {
+		case State::GameScreen:
+		
+			break;
+		case State::MenuScreen:
+
+			break;
+		case State::DeathScreen:
+
+			break;
+	}
+	currentState = state;
 }
 
 

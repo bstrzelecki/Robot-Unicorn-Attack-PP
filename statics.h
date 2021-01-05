@@ -9,12 +9,12 @@
 #define XPOSITION 85
 #define ABSTRACT =0
 
-typedef enum {
-	GameMode,
-	Menu,
-	Death,
-	Score
-}State;
+enum class State{
+	GameScreen,
+	MenuScreen,
+	DeathScreen,
+	ScoreScreen
+};
 
 typedef enum {
 	Up,
