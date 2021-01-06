@@ -10,12 +10,18 @@ public:
 	Scene(Player* player);
 	~Scene();
 	void Move(int delta);
-	void SetScrollingSpeed(int speed);
 	virtual void Render(double delta, RenderBatch* batch) override;
 	virtual void Update(double delta) override;
+	void TriggerDeath();
+	int score=0;
+	int scrollSpeed = 5;
 private:
-	int scrollSpeed = 1;
+	int deathFlag = 0;
+
 	int loopWidth;
+	double speedUpTimer = 0;
+	double speedUpMaxtime = 10;
+	int maxScrollSpeed = 10;
 	int platformCount = 0;
 	Player* player;
 	Platform** platforms;

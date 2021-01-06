@@ -41,7 +41,20 @@ void Player::ApplyMove(int delta)
 	offset = yPos - height;
 }
 
+void Player::Kill()
+{
+	deathFlag = 1;
+	deathAnimationTime = 0;
+}
+
 void Player::Update(double delta) {
+	if (deathFlag) {
+		deathAnimationTime += delta;
+		if (deathAnimationTime >= deathAnimationDuration) {
+			isDead = 1;
+		} 
+		return;
+	}
 	if (isDashing) {
 		currentDash += delta;
 		moveBuffer = 0;

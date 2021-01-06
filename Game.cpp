@@ -1,7 +1,5 @@
 #include "Game.h"
-#include "Menu.h"
-#include "Death.h"
-#include "FinalScore.h"
+
 
 Game::Game()
 {
@@ -28,12 +26,12 @@ void Game::Run()
 	
 	Input* arrowInput = new ArrowKeyController(player, scene);
 	Input* defaultInput = new ZXController(player);
-	Menu menu;
-	Death death;
-	FinalScore finalScore;
+
+
+
 	input = defaultInput;
 	int currentInput = 0;
-	hud = new Hud();
+
 	RenderBatch batch(screen, charset);
 	while (!quit) {
 		t2 = SDL_GetTicks();
@@ -46,8 +44,8 @@ void Game::Run()
 
 		SDL_Event event;
 
-
-
+		hud->score = scene->score;
+		
 		if (currentState == State::GameScreen) {
 			while (SDL_PollEvent(&event)) {
 				input->Resolve(event);
@@ -60,31 +58,35 @@ void Game::Run()
 					case SDLK_n:
 						quit = 1;
 						restartFlag = 1;
+						SetState(State::MenuScreen);
 						break;
 					case SDLK_d:
 						if (input == defaultInput) {
 							input = arrowInput;
 							player->SetGravity(0);
-							scene->SetScrollingSpeed(0);
+							scene->scrollSpeed = 0;
 						}
 						else {
 							input = defaultInput;
 							player->SetGravity(2);
-							scene->SetScrollingSpeed(1);
+							scene->scrollSpeed = 1;
 						}
 					}
 					break;
 				}
 			}
 
-
 			player->Update(delta);
 			scene->Update(delta);
 			hud->Update(delta);
 
-			hud->Render(delta, &batch);
 			scene->Render(delta, &batch);
 			player->Render(delta, &batch);
+			hud->Render(delta, &batch);
+
+			if (player->isDead) {
+				SetState(State::DeathScreen);
+			}
 		}
 
 		if (currentState == State::MenuScreen) {
@@ -99,13 +101,13 @@ void Game::Run()
 						case SDLK_n:
 							quit = 1;
 							restartFlag = 1;
-							currentState = State::GameScreen;
+							SetState(State::GameScreen);
 							break;
 					}
 					break;
 				}
 			}
-			menu.Render(delta, &batch);
+			menu->Render(delta, &batch);
 		}
 
 
@@ -121,45 +123,49 @@ void Game::Run()
 						case SDLK_c:
 							quit = 1;
 							restartFlag = 1;
-							currentState = State::GameScreen;
+							SetState(State::GameScreen);
 							break;
 						case SDLK_m:
 							quit = 1;
 							restartFlag = 1;
-							currentState = State::MenuScreen;
+							SetState(State::MenuScreen);
 							break;
 					}
 					break;
 				}
 			}
-			death.Render(delta, &batch);
+			death->Render(delta, &batch);
 		}
 
 		if (currentState == State::ScoreScreen) {
 			while (SDL_PollEvent(&event)) {
 				input->Resolve(event);
 				switch (event.type) {
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym) {
-					case SDLK_ESCAPE:
-						quit = 1;
+					case SDL_KEYDOWN:
+						switch (event.key.keysym.sym) {
+						case SDLK_ESCAPE:
+							quit = 1;
+							break;
+						case SDLK_COMMA:
+							quit = 1;
+							restartFlag = 1;
+							SetState(State::MenuScreen);
+							break;
+						}
 						break;
-					case SDLK_c:
-						quit = 1;
-						restartFlag = 1;
-						currentState = State::GameScreen;
+					case SDL_TEXTINPUT:
+						// Add backspace support
+						if (nameLenght > 28)
+							break;
+						nameLenght++;
+						strcat(name, event.text.text);
+						strcpy(finalScore->name, name);
 						break;
-					case SDLK_m:
-						quit = 1;
-						restartFlag = 1;
-						currentState = State::MenuScreen;
-						break;
-					}
-					break;
 				}
 			}
-			finalScore.Render(delta, &batch);
+			finalScore->Render(delta, &batch);
 		}
+
 
 		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
 		SDL_RenderCopy(renderer, scrtex, NULL, NULL);
@@ -177,13 +183,24 @@ void Game::SetState(State state)
 {
 	switch (state) {
 		case State::GameScreen:
-		
+			hud->lives = lives;
 			break;
 		case State::MenuScreen:
-
+			lives = 3;
 			break;
 		case State::DeathScreen:
-
+			lives--;
+			death->score = scene->score;
+			totalScore += scene->score;
+			death->lives = lives;
+			if (lives == 0)
+			{
+				SetState(State::ScoreScreen);
+				return;
+			}
+			break;
+		case State::ScoreScreen:
+			finalScore->score = totalScore;
 			break;
 	}
 	currentState = state;
@@ -193,7 +210,11 @@ void Game::SetState(State state)
 void Game::Init()
 {
 	int rc;
-	double delta;
+
+	menu = new Menu();
+	death = new Death();
+	finalScore = new FinalScore();
+	hud = new Hud();
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		printf("SDL_Init error: %s\n", SDL_GetError());

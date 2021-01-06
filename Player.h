@@ -16,12 +16,17 @@ public:
 	void StopDash();
 	void SetGravity(int gracvity);
 	void ApplyMove(int delta);
+	void Kill();
 	void RestoreJumps(int count = 2);
 	int height;
 	int isDashing = 0;
 	Point topCollision, bottomCollision, bottomCollisionThreshold, topCollisionThreshold;
 	int offset = 0;
+	int isDead = 0;
 private:
+	double deathAnimationDuration = 3;
+	double deathAnimationTime = 0;
+	int deathFlag = 0;
 	int yPos = 0;
 	int dashKey = 0;
 	int isJumping=0;

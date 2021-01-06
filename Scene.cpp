@@ -28,6 +28,7 @@ Scene::~Scene()
 
 void Scene::Move(int delta)
 {
+	score += delta;
 	for (int i = 0; i < platformCount; i++) {
 		platforms[i]->Position.x -= delta;
 		if (platforms[i]->Position.x + platforms[i]->Width < 0)
@@ -36,11 +37,6 @@ void Scene::Move(int delta)
 		}
 	}
 
-}
-
-void Scene::SetScrollingSpeed(int speed)
-{
-	scrollSpeed = speed;
 }
 
 void Scene::Render(double delta, RenderBatch* batch)
@@ -52,7 +48,14 @@ void Scene::Render(double delta, RenderBatch* batch)
 
 void Scene::Update(double delta)
 {
-	Move(scrollSpeed * (player->isDashing?2:1));
+	if (deathFlag)
+		return;
+	Move(scrollSpeed * (player->isDashing?2:1) * delta * 100);
+	speedUpTimer += delta;
+	if (speedUpTimer > speedUpMaxtime && scrollSpeed < maxScrollSpeed) {
+		scrollSpeed++;
+		speedUpTimer = 0;
+	}
 	if (player->isDashing)
 		return;
 	for (int i = 0; i < platformCount; i++) {
@@ -66,27 +69,33 @@ void Scene::Update(double delta)
 		}
 		if (platforms[i]->TestCollision(player->topCollision.y) && !platforms[i]->TestCollision(player->topCollisionThreshold.y))
 		{
-			player->RestoreJumps();
 			player->ApplyMove(platforms[i]->Position.y + platforms[i]->Height - player->topCollision.y);
 		}
 		if (platforms[i]->TestCollision(player->bottomCollision.y) && platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
 		{
-			printf("Death\n");
+			TriggerDeath();
 		}
 		if (platforms[i]->TestCollision(player->topCollision.y) && platforms[i]->TestCollision(player->topCollisionThreshold.y))
 		{
-			printf("Death\n");
+			TriggerDeath();
 		}
 		if (!platforms[i]->TestCollision(player->bottomCollision.y) && platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
 		{
-			printf("Death\n");
+			TriggerDeath();
 		}
 		if (!platforms[i]->TestCollision(player->topCollision.y) && platforms[i]->TestCollision(player->topCollisionThreshold.y))
 		{
-			printf("Death\n");
+			TriggerDeath();
 		}
 	}
 	for (int i = 0; i < platformCount; i++) {
 		platforms[i]->Position.y = platforms[i]->startingPosition.y - player->height;
 	}
+}
+
+void Scene::TriggerDeath()
+{
+	scrollSpeed = 0;
+	deathFlag = 1;
+	player->Kill();
 }

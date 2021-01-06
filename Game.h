@@ -7,6 +7,9 @@
 #include"./SDL2-2.0.10/include/SDL_main.h"
 #include "Hud.h"
 #include "ZXController.h"
+#include "Menu.h"
+#include "Death.h"
+#include "FinalScore.h"
 class Game
 {
 public:
@@ -17,6 +20,13 @@ public:
 	void Init();
 	void Dispose();
 private:
+	int totalScore = 0;
+	char name[32]="";
+	int nameLenght = 0;
+	int lives=3;
+	Menu* menu;
+	Death* death;
+	FinalScore* finalScore;
 	State currentState = State::ScoreScreen;
 	Scene* scene;
 	Player* player;
