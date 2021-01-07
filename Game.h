@@ -10,6 +10,7 @@
 #include "Menu.h"
 #include "Death.h"
 #include "FinalScore.h"
+#include "Scoreboard.h"
 class Game
 {
 public:
@@ -26,8 +27,9 @@ private:
 	int lives=3;
 	Menu* menu;
 	Death* death;
+	ScoreBoard scoreboard;
 	FinalScore* finalScore;
-	State currentState = State::ScoreScreen;
+	State currentState = State::MenuScreen;
 	Scene* scene;
 	Player* player;
 	Input* input;

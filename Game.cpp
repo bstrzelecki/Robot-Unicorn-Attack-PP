@@ -76,8 +76,8 @@ void Game::Run()
 				}
 			}
 
-			player->Update(delta);
 			scene->Update(delta);
+			player->Update(delta);
 			hud->Update(delta);
 
 			scene->Render(delta, &batch);
@@ -98,6 +98,12 @@ void Game::Run()
 						case SDLK_ESCAPE:
 							quit = 1;
 							break;
+						case SDLK_UP:
+							scoreboard.Move(-1);
+							break;
+						case SDLK_DOWN:
+							scoreboard.Move(1);
+							break;
 						case SDLK_n:
 							quit = 1;
 							restartFlag = 1;
@@ -107,6 +113,7 @@ void Game::Run()
 					break;
 				}
 			}
+			scoreboard.Render(delta, &batch);
 			menu->Render(delta, &batch);
 		}
 
@@ -143,14 +150,21 @@ void Game::Run()
 				switch (event.type) {
 					case SDL_KEYDOWN:
 						switch (event.key.keysym.sym) {
-						case SDLK_ESCAPE:
-							quit = 1;
-							break;
-						case SDLK_COMMA:
-							quit = 1;
-							restartFlag = 1;
-							SetState(State::MenuScreen);
-							break;
+							case SDLK_ESCAPE:
+								quit = 1;
+								break;
+							case SDLK_COMMA:
+								quit = 1;
+								restartFlag = 1;
+								if(!strcmp(name, ""))
+									ScoreBoard::Save(name, totalScore);
+								SetState(State::MenuScreen);
+								break;
+							case SDLK_KP_ENTER:
+								quit = 1;
+								restartFlag = 1;
+								SetState(State::MenuScreen);
+								break;
 						}
 						break;
 					case SDL_TEXTINPUT:
@@ -183,9 +197,16 @@ void Game::SetState(State state)
 {
 	switch (state) {
 		case State::GameScreen:
+			name[0] = '\0';
+			finalScore->name[0] = '\n';
+			hud->time = 0;
 			hud->lives = lives;
 			break;
 		case State::MenuScreen:
+			scoreboard.Load();
+			name[0] = '\0';
+			finalScore->name[0] = '\n';
+			totalScore = 0;
 			lives = 3;
 			break;
 		case State::DeathScreen:
@@ -200,6 +221,8 @@ void Game::SetState(State state)
 			}
 			break;
 		case State::ScoreScreen:
+			name[0] = '\0';
+			finalScore->name[0] = '\n';
 			finalScore->score = totalScore;
 			break;
 	}

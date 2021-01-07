@@ -10,8 +10,8 @@ public:
 	Hud();
 	int score = 0;
 	int lives = 3;
+	double time = 0;
 private:
 	SDL_Surface* liveSprite;
-	double time = 0;
 };
 

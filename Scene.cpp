@@ -10,8 +10,8 @@ Scene::Scene(Player* player)
 		platformCount = 0;
 		return;
 	}
-	platforms[0] = new Platform(Point(150, 80));
-	platforms[1] = new Platform(Point(500, 180));
+	platforms[0] = new Platform(Point(150, 800));
+	platforms[1] = new Platform(Point(500, 1800));
 	platforms[2] = new Platform(Point(250, 380));
 	platforms[3] = new Platform(Point(1000, 800));
 	platforms[4] = new Platform(Point(2000, 1000));
@@ -65,7 +65,11 @@ void Scene::Update(double delta)
 		if (platforms[i]->TestCollision(player->bottomCollision.y) && !platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
 		{
 			player->RestoreJumps();
+			player->isFalling = 0;
 			player->ApplyMove(platforms[i]->Position.y - player->bottomCollision.y);
+		}
+		else {
+			player->isFalling = 1;
 		}
 		if (platforms[i]->TestCollision(player->topCollision.y) && !platforms[i]->TestCollision(player->topCollisionThreshold.y))
 		{

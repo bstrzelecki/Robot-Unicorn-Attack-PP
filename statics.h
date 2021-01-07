@@ -9,6 +9,11 @@
 #define XPOSITION 85
 #define ABSTRACT =0
 
+#define NAME_MAX_LENGHT 28
+#define BUFFSIZE 256
+
+#define PAGE_SIZE 10
+
 enum class State{
 	GameScreen,
 	MenuScreen,

@@ -2,6 +2,7 @@
 #include "Prop.h"
 #include "statics.h"
 #include <cstdio>
+#include "Animation.h"
 class Player : public Prop
 {
 public:
@@ -23,8 +24,15 @@ public:
 	Point topCollision, bottomCollision, bottomCollisionThreshold, topCollisionThreshold;
 	int offset = 0;
 	int isDead = 0;
+	int isFalling = 0;
 private:
-	double deathAnimationDuration = 3;
+	int lastPos = 0;
+	Animation* run;
+	Animation* jump;
+	Animation* dash;
+	Animation* death;
+	Animation* fall;
+	double deathAnimationDuration = 1;
 	double deathAnimationTime = 0;
 	int deathFlag = 0;
 	int yPos = 0;

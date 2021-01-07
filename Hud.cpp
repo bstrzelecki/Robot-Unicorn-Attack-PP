@@ -18,5 +18,4 @@ void Hud::Update(double delta)
 Hud::Hud()
 {
 	liveSprite = SDL_LoadBMP("./live.bmp");
-
 }

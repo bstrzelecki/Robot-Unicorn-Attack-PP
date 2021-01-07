@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="ArrowKeyController.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Death.cpp" />
@@ -31,6 +32,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderBatch.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="ZXController.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +41,7 @@
     <Image Include="eti.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="ArrowKeyController.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Death.h" />
@@ -52,6 +55,7 @@
     <ClInclude Include="Prop.h" />
     <ClInclude Include="RenderBatch.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="statics.h" />
     <ClInclude Include="ZXController.h" />
   </ItemGroup>

@@ -3,6 +3,14 @@
 
 Player::Player() {
 	sprite = SDL_LoadBMP("./player.bmp");
+	run = new Animation("unicorn", 37);
+	jump = new Animation("jump", 11);
+	dash = new Animation("dash", 10);
+	death = new Animation("death", 16);
+	fall = new Animation("fall", 10);
+	dash->duration = maxDashTime;
+	death->duration = deathAnimationDuration;
+	fall->loop = 0;
 	height = 0;
 	
 }
@@ -20,7 +28,26 @@ void Player::Render(double delta, RenderBatch* batch) {
 	batch->DrawPixel(topCollision.x, topCollision.y, 0xFF0000);
 	batch->DrawPixel(topCollisionThreshold.x, topCollisionThreshold.y, 0xFFFF00);
 
-	batch->DrawSurface(sprite, XPOSITION - 20, offset + SCREEN_HEIGHT/2);
+	int xOffset = 0;
+	SDL_Surface* sp = run->GetCurrent();
+	if (isFalling) {
+		sp = fall->GetCurrent();
+		xOffset = 150;
+	}
+	if (isJumping && currentJump < maxJump) {
+		sp = jump->GetCurrent();
+		xOffset = 150;
+	}
+	if (isDashing) {
+		sp = dash->GetCurrent();
+		xOffset = 100;
+	}
+	if (deathFlag) {
+		sp = death->GetCurrent();
+		xOffset = 0;
+	}
+
+	batch->DrawSurface(sp, XPOSITION - 20 - xOffset, offset + SCREEN_HEIGHT/2);
 }
 
 void Player::ApplyMove(int delta)
@@ -43,6 +70,7 @@ void Player::ApplyMove(int delta)
 
 void Player::Kill()
 {
+	death->Reset();
 	deathFlag = 1;
 	deathAnimationTime = 0;
 }
@@ -50,6 +78,7 @@ void Player::Kill()
 void Player::Update(double delta) {
 	if (deathFlag) {
 		deathAnimationTime += delta;
+		death->Advance(delta);
 		if (deathAnimationTime >= deathAnimationDuration) {
 			isDead = 1;
 		} 
@@ -57,25 +86,33 @@ void Player::Update(double delta) {
 	}
 	if (isDashing) {
 		currentDash += delta;
+		dash->Advance(delta);
 		moveBuffer = 0;
 		if(currentDash > maxDashTime)
 			isDashing = 0;
 		return;
 	}
+	if (isFalling) {
+		fall->Advance(delta);
+	}
+	else {
+		fall->Reset();
+	}
+	run->Advance(delta);
 	ApplyMove(moveBuffer * (delta + 1));
 	if (isJumping == 1 || smallJump > 0) {
 		if (currentJump < maxJump || smallJump > 0) {
 			smallJump -= delta;
 			currentJump += delta;
-			// FIXME
+			jump->Advance(delta);
 			ApplyMove(-jumpRate*(1.0/currentJump)*(smallJump>0?1.25:1));
 		}
 		else {
 			ApplyMove(.5 * gravity);
 		}
-		
 	}
 	else {
+		jump->Reset();
 		ApplyMove(gravity);
 	}
 	moveBuffer = 0;
@@ -96,6 +133,7 @@ void Player::Dash()
 {
 	if (isDashing || !canDash || dashKey)
 		return;
+	dash->Reset();
 	currentDash = 0;
 	dashKey = 1;
 	isDashing = 1;

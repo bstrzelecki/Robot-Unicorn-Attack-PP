@@ -3,18 +3,17 @@
 #include<stdio.h>
 #include<string.h>
 
-extern "C" {
 #include"./SDL2-2.0.10/include/SDL.h"
 #include"./SDL2-2.0.10/include/SDL_main.h"
 #include "RenderBatch.h"
 #include "Player.h"
-}
+
 
 #include "statics.h"
 
 // main
 #ifdef __cplusplus
-extern "C"
+
 #endif
 #include "Input.h"
 #include "ArrowKeyController.h"
