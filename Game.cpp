@@ -1,4 +1,6 @@
 #include "Game.h"
+#include <time.h>
+#include "Dolphins.h"
 
 
 Game::Game()
@@ -27,7 +29,9 @@ void Game::Run()
 	Input* arrowInput = new ArrowKeyController(player, scene);
 	Input* defaultInput = new ZXController(player);
 
+	Dolphins dolphins;
 
+	int ddl = 0;
 
 	input = defaultInput;
 	int currentInput = 0;
@@ -75,11 +79,18 @@ void Game::Run()
 					break;
 				}
 			}
+			int d = scene->score / 10000;
+			if (d > ddl) {
+				dolphins.Run(d);
+				ddl = d;
+			}
 
 			scene->Update(delta);
 			player->Update(delta);
 			hud->Update(delta);
+			dolphins.Update(delta);
 
+			dolphins.Render(delta, &batch);
 			scene->Render(delta, &batch);
 			player->Render(delta, &batch);
 			hud->Render(delta, &batch);
@@ -233,6 +244,8 @@ void Game::SetState(State state)
 void Game::Init()
 {
 	int rc;
+
+	srand(time(NULL));
 
 	menu = new Menu();
 	death = new Death();

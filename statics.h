@@ -14,6 +14,9 @@
 
 #define PAGE_SIZE 10
 
+#define BONUS_POINTS 10
+#define STAR_POINTS 100
+
 enum class State{
 	GameScreen,
 	MenuScreen,

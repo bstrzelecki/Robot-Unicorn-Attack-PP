@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <cstdio>
 #include "Player.h"
+#include "Bonus.h"
+#include <cstring>
+#include "Star.h"
 class Scene: public Prop
 {
 public:
@@ -17,8 +20,14 @@ public:
 	int scrollSpeed = 5;
 private:
 	int deathFlag = 0;
-
+	void AddBonusPoints();
+	void AddStarPoints();
 	int loopWidth;
+	int bonusStreak = 1;
+	int starStreak = 1;
+	int displayedBonus = 0;
+	double bonusTimer = 0;
+	double bonusDuration = 1;
 	double speedUpTimer = 0;
 	double speedUpMaxtime = 10;
 	int maxScrollSpeed = 10;
