@@ -109,7 +109,7 @@ void Scene::Update(double delta)
 		return;
 	Move(scrollSpeed * (player->isDashing?2:1) * delta * 100);
 	speedUpTimer += delta;
-	if (speedUpTimer > speedUpMaxtime && scrollSpeed < maxScrollSpeed) {
+	if (speedUpTimer > speedUpMaxtime && scrollSpeed < maxScrollSpeed && scrollSpeed != 0) {
 		scrollSpeed++;
 		speedUpTimer = 0;
 	}
@@ -134,6 +134,9 @@ void Scene::Update(double delta)
 			player->ApplyMove(platforms[i]->Position.y + platforms[i]->Height - player->topCollision.y);
 		}
 		DeadlyCollisions(i);
+	}
+	if (player->height + player->offset > SCENE_HEIGHT + SCREEN_HEIGHT / 2) {
+		TriggerDeath();
 	}
 	for (int i = 0; i < platformCount; i++) {
 		platforms[i]->Position.y = platforms[i]->startingPosition.y - player->height;

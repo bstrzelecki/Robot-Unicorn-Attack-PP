@@ -10,7 +10,7 @@ void FinalScore::Render(double delta, RenderBatch* batch)
 	batch->DrawString(SCREEN_WIDTH / 6, SCREEN_HEIGHT / 2 + LINE_SPACEING * 1, "You have 0 lives remaining");
 	batch->DrawString(SCREEN_WIDTH / 6, SCREEN_HEIGHT / 2 + LINE_SPACEING * 2, totalScoreText);
 	batch->DrawString(SCREEN_WIDTH / 6, SCREEN_HEIGHT / 2 + LINE_SPACEING * 3, nameText);
-	batch->DrawString(SCREEN_WIDTH / 6, SCREEN_HEIGHT / 2 + LINE_SPACEING * 4, "Press '.' to save or ',' to go to the menu");
+	batch->DrawString(SCREEN_WIDTH / 6, SCREEN_HEIGHT / 2 + LINE_SPACEING * 4, "Press 'ENTER' to save or ',' to go to the menu");
 }
 
 void FinalScore::Update(double delta)

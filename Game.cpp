@@ -93,14 +93,14 @@ void Game::ScoreLoop(GameDescriptor game)
 			case SDLK_ESCAPE:
 				*game.quit = 1;
 				break;
-			case SDLK_COMMA:
+			case SDLK_KP_ENTER:
 				*game.quit = 1;
 				*game.restartFlag = 1;
 				if (!strcmp(name, ""))
 					ScoreBoard::Save(name, totalScore);
 				SetState(State::MenuScreen);
 				break;
-			case SDLK_KP_ENTER:
+			case SDLK_COMMA:
 				*game.quit = 1;
 				*game.restartFlag = 1;
 				SetState(State::MenuScreen);

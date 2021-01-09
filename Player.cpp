@@ -72,6 +72,8 @@ void Player::ApplyMove(int delta)
 		height = SCENE_HEIGHT;
 	}
 	offset = yPos - height;
+
+	offset = offset < -SCREEN_HEIGHT / 2 ? -SCREEN_HEIGHT / 2 : offset;
 }
 
 void Player::Kill()
@@ -98,12 +100,6 @@ void Player::Update(double delta) {
 			isDashing = 0;
 		return;
 	}
-	if (isFalling) {
-		fall->Advance(delta);
-	}
-	else {
-		fall->Reset();
-	}
 	run->Advance(delta);
 	ApplyMove(moveBuffer * (delta + 1));
 	if (isJumping == 1 || smallJump > 0) {
@@ -120,6 +116,12 @@ void Player::Update(double delta) {
 	else {
 		jump->Reset();
 		ApplyMove(gravity);
+	}
+	if (isFalling) {
+		fall->Advance(delta);
+	}
+	else {
+		fall->Reset();
 	}
 	moveBuffer = 0;
 }

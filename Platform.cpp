@@ -50,7 +50,7 @@ void Platform::AddStar(Platform* star)
 
 void Platform::Loop(int width)
 {
-	Position.x = width;
+	Position.x += width;
 	isVisible = 1;
 	for (int i = 0; i < bonusCount; i++) {
 		bonuses[i]->Loop(width);

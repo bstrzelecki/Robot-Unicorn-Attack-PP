@@ -18,7 +18,7 @@ public:
 	virtual void Update(double delta) override;
 	void TriggerDeath();
 	int score=0;
-	int scrollSpeed = 5;
+	int scrollSpeed = BASE_SCROLLSPEED;
 private:
 	int deathFlag = 0;
 	void MovePickups(double delta);
