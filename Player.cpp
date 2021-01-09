@@ -16,6 +16,11 @@ Player::Player() {
 }
 Player::~Player()
 {
+	delete run;
+	delete jump;
+	delete dash;
+	delete fall;
+	delete death;
 	SDL_FreeSurface(sprite);
 }
 void Player::Move(int deltaY)
@@ -23,6 +28,7 @@ void Player::Move(int deltaY)
 	moveBuffer += deltaY;
 }
 void Player::Render(double delta, RenderBatch* batch) {
+	// REMOVE
 	batch->DrawPixel(bottomCollision.x, bottomCollision.y, 0xFF0000);
 	batch->DrawPixel(bottomCollisionThreshold.x, bottomCollisionThreshold.y, 0xFF00FF);
 	batch->DrawPixel(topCollision.x, topCollision.y, 0xFF0000);
@@ -32,22 +38,22 @@ void Player::Render(double delta, RenderBatch* batch) {
 	SDL_Surface* sp = run->GetCurrent();
 	if (isFalling) {
 		sp = fall->GetCurrent();
-		xOffset = 150;
+		xOffset = JUMP_ANIMATION_OFFSET;
 	}
 	if (isJumping && currentJump < maxJump) {
 		sp = jump->GetCurrent();
-		xOffset = 150;
+		xOffset = JUMP_ANIMATION_OFFSET;
 	}
 	if (isDashing) {
 		sp = dash->GetCurrent();
-		xOffset = 100;
+		xOffset = DASH_ANIMATION_OFFSET;
 	}
 	if (deathFlag) {
 		sp = death->GetCurrent();
 		xOffset = 0;
 	}
 
-	batch->DrawSurface(sp, XPOSITION - 20 - xOffset, offset + SCREEN_HEIGHT/2);
+	batch->DrawSurface(sp, XPOSITION - DEFAULT_OFFSET - xOffset, offset + SCREEN_HEIGHT/2);
 }
 
 void Player::ApplyMove(int delta)
@@ -55,11 +61,11 @@ void Player::ApplyMove(int delta)
 	yPos += delta;
 	height = yPos;
 
-	topCollision = Point(XPOSITION, SCREEN_HEIGHT / 2 - 40 + offset);
-	topCollisionThreshold = Point(XPOSITION, SCREEN_HEIGHT / 2 - 25 + offset);
+	topCollision = Point(XPOSITION, SCREEN_HEIGHT / 2 - COLLISION_OFFSET + offset);
+	topCollisionThreshold = Point(XPOSITION, SCREEN_HEIGHT / 2 - COLLISION_THRESHOLD + offset);
 
-	bottomCollision = Point(XPOSITION, SCREEN_HEIGHT / 2 + 40 + offset);
-	bottomCollisionThreshold = Point(XPOSITION, SCREEN_HEIGHT / 2 + 25 + offset);
+	bottomCollision = Point(XPOSITION, SCREEN_HEIGHT / 2 + COLLISION_OFFSET + offset);
+	bottomCollisionThreshold = Point(XPOSITION, SCREEN_HEIGHT / 2 + COLLISION_THRESHOLD + offset);
 
 	height = height > 0 ? height : 0;
 	if (height > SCENE_HEIGHT) {
@@ -121,7 +127,7 @@ void Player::Update(double delta) {
 void Player::Jump()
 {
 	if (jumpCount > 0 && !isJumping) {
-		smallJump = .25;
+		smallJump = MINUMUM_JUMP_DURATION;
 		isJumping = 1;
 		currentJump = 1;
 		jumpCount--;
@@ -155,8 +161,6 @@ void Player::StopJump()
 {
 	isJumping = 0;
 }
-
-
 
 void Player::RestoreJumps(int count)
 {

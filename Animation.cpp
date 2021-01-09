@@ -22,6 +22,7 @@ Animation::~Animation()
 	for (int i = 0; i < frameCount; i++) {
 		SDL_FreeSurface(frames[i]);
 	}
+	delete frames;
 }
 
 SDL_Surface* Animation::GetCurrent()

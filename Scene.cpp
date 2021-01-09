@@ -7,6 +7,7 @@ Scene::Scene(Player* player)
 	FILE* file = fopen("scene.txt", "r");
 	char validator[BUFFSIZE]="";
 	int buff = 0;
+	loopWidth = 700;
 	while (strcmp(validator, "platforms:"))
 	{
 		int count = 0;
@@ -112,6 +113,36 @@ void Scene::Update(double delta)
 		scrollSpeed++;
 		speedUpTimer = 0;
 	}
+	MovePickups(delta);
+	if (player->isDashing)
+		return;
+	for (int i = 0; i < platformCount; i++) {
+		platforms[i]->Position.y = platforms[i]->startingPosition.y - player->height;
+	}
+	for (int i = 0; i < platformCount; i++) {
+		if (platforms[i]->TestCollision(player->bottomCollision.y) && !platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
+		{
+			player->RestoreJumps();
+			player->isFalling = 0;
+			player->ApplyMove(platforms[i]->Position.y - player->bottomCollision.y);
+		}
+		else {
+			player->isFalling = 1;
+		}
+		if (platforms[i]->TestCollision(player->topCollision.y) && !platforms[i]->TestCollision(player->topCollisionThreshold.y))
+		{
+			player->ApplyMove(platforms[i]->Position.y + platforms[i]->Height - player->topCollision.y);
+		}
+		DeadlyCollisions(i);
+	}
+	for (int i = 0; i < platformCount; i++) {
+		platforms[i]->Position.y = platforms[i]->startingPosition.y - player->height;
+
+	}
+}
+
+void Scene::MovePickups(double delta)
+{
 	for (int i = 0; i < platformCount; i++) {
 		platforms[i]->Update(delta);
 		for (int j = 0; j < platforms[i]->bonusCount; j++) {
@@ -142,45 +173,25 @@ void Scene::Update(double delta)
 			}
 		}
 	}
-	if (player->isDashing)
-		return;
-	for (int i = 0; i < platformCount; i++) {
-		platforms[i]->Position.y = platforms[i]->startingPosition.y - player->height;
-	}
-	for (int i = 0; i < platformCount; i++) {
-		if (platforms[i]->TestCollision(player->bottomCollision.y) && !platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
-		{
-			player->RestoreJumps();
-			player->isFalling = 0;
-			player->ApplyMove(platforms[i]->Position.y - player->bottomCollision.y);
-		}
-		else {
-			player->isFalling = 1;
-		}
-		if (platforms[i]->TestCollision(player->topCollision.y) && !platforms[i]->TestCollision(player->topCollisionThreshold.y))
-		{
-			player->ApplyMove(platforms[i]->Position.y + platforms[i]->Height - player->topCollision.y);
-		}
-		if (platforms[i]->TestCollision(player->bottomCollision.y) && platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
-		{
-			TriggerDeath();
-		}
-		if (platforms[i]->TestCollision(player->topCollision.y) && platforms[i]->TestCollision(player->topCollisionThreshold.y))
-		{
-			TriggerDeath();
-		}
-		if (!platforms[i]->TestCollision(player->bottomCollision.y) && platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
-		{
-			TriggerDeath();
-		}
-		if (!platforms[i]->TestCollision(player->topCollision.y) && platforms[i]->TestCollision(player->topCollisionThreshold.y))
-		{
-			TriggerDeath();
-		}
-	}
-	for (int i = 0; i < platformCount; i++) {
-		platforms[i]->Position.y = platforms[i]->startingPosition.y - player->height;
+}
 
+void Scene::DeadlyCollisions(int i)
+{
+	if (platforms[i]->TestCollision(player->bottomCollision.y) && platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
+	{
+		TriggerDeath();
+	}
+	if (platforms[i]->TestCollision(player->topCollision.y) && platforms[i]->TestCollision(player->topCollisionThreshold.y))
+	{
+		TriggerDeath();
+	}
+	if (!platforms[i]->TestCollision(player->bottomCollision.y) && platforms[i]->TestCollision(player->bottomCollisionThreshold.y))
+	{
+		TriggerDeath();
+	}
+	if (!platforms[i]->TestCollision(player->topCollision.y) && platforms[i]->TestCollision(player->topCollisionThreshold.y))
+	{
+		TriggerDeath();
 	}
 }
 

@@ -8,6 +8,7 @@ class Player : public Prop
 public:
 	Player();
 	~Player();
+	// Move up and down
 	void Move(int deltaY);
 	void Render(double delta, RenderBatch* batch) override;
 	void Update(double delta) override;
@@ -16,9 +17,9 @@ public:
 	void Dash();
 	void StopDash();
 	void SetGravity(int gracvity);
-	void ApplyMove(int delta);
 	void Kill();
 	void RestoreJumps(int count = 2);
+	void ApplyMove(int delta);
 	int height;
 	int isDashing = 0;
 	Point topCollision, bottomCollision, bottomCollisionThreshold, topCollisionThreshold;

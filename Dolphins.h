@@ -13,6 +13,5 @@ private:
 	int offset = 300;
 	int commonX = 0;
 	int count = 0;
-	int score;
 };
 

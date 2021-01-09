@@ -8,14 +8,23 @@ Platform::Platform(Point start, Point size)
 	startingPosition = start;
 	bonuses = new Platform * [BUFFSIZE];
 	stars = new Platform * [BUFFSIZE];
-	topCollider = new Collider(Width, Up);
-	bottomCollider = new Collider(Width, Down);
+	topCollider = new Collider(Width, Direction::Up);
+	bottomCollider = new Collider(Width, Direction::Down);
 }
 
 Platform::~Platform()
 {
 	delete topCollider;
 	delete bottomCollider;
+
+	for (int i = 0; i < bonusCount; i++) {
+		delete bonuses[i];
+	}
+	for (int i = 0; i < starCount; i++) {
+		delete stars[i];
+	}
+	delete bonuses;
+	delete stars;
 }
 
 int Platform::TestCollision(int playerY)
@@ -25,17 +34,6 @@ int Platform::TestCollision(int playerY)
 		return 1;
 	else
 		return 0;
-}
-
-void Platform::Reset()
-{
-	Position = startingPosition;
-	for (int i = 0; i < bonusCount; i++) {
-		bonuses[i]->Reset();
-	}
-	for (int i = 0; i < starCount; i++) {
-		stars[i]->Reset();
-	}
 }
 
 void Platform::AddBonus(Platform* bonus)
@@ -65,41 +63,45 @@ void Platform::Loop(int width)
 
 void Platform::Randomize()
 {
-	for (int i = 0; i < bonusCount; i++) {
-		bonuses[i]->isVisible = 0;
-	}
-	for (int i = 0; i < starCount; i++) {
-		stars[i]->isVisible = 0;
-	}
-	int bb = rand() % (bonusCount + 3);
-	int sb = rand() % (starCount + 3);
-	if (bb < bonusCount) {
-		bonuses[bb]->isVisible = 1;
-	}
-	if (sb < starCount) {
-		stars[sb]->isVisible = 1;
-	}
+	ResetPickups(bonuses, bonusCount);
+	ResetPickups(stars, starCount);
+}
 
+void Platform::ResetPickups(Platform** list, int count)
+{
+	for (int i = 0; i < count; i++) {
+		list[i]->isVisible = 0;
+	}
+	int sb = rand() % (count + SPAWN_CHANCE_OFFSET);
+	if (sb < count) {
+		list[sb]->isVisible = 1;
+	}
 }
 
 void Platform::Render(double delta, RenderBatch* batch)
 {
 	if (!isVisible)return;
-	batch->DrawRectangle(Position.x, Position.y, Width, Height, 0xff0000, 0x00ff00);
-	for (int i = 0; i < bonusCount; i++) {
-		bonuses[i]->Render(delta,batch);
-	}
-	for (int i = 0; i < starCount; i++) {
-		stars[i]->Render(delta, batch);
+	batch->DrawRectangle(Position.x, Position.y, Width, Height, RED, GREEN);
+	DrawPickup(bonuses, bonusCount, delta, batch);
+	DrawPickup(stars, starCount, delta, batch);
+}
+
+void Platform::DrawPickup(Platform** list, int count , double delta, RenderBatch* batch)
+{
+	for (int i = 0; i < count; i++) {
+		list[i]->Render(delta, batch);
 	}
 }
 
 void Platform::Update(double delta)
 {
-	for (int i = 0; i < bonusCount; i++) {
-		bonuses[i]->Position = Point(bonuses[i]->startingPosition.x + Position.x,bonuses[i]->startingPosition.y + Position.y);
-	}
-	for (int i = 0; i < starCount; i++) {
-		stars[i]->Position = Point(stars[i]->startingPosition.x + Position.x, stars[i]->startingPosition.y + Position.y);
+	UpdatePickup(bonuses, bonusCount);
+	UpdatePickup(stars, starCount);
+}
+
+void Platform::UpdatePickup(Platform** list, int count)
+{
+	for (int i = 0; i < count; i++) {
+		list[i]->Position = Point(list[i]->startingPosition.x + Position.x, list[i]->startingPosition.y + Position.y);
 	}
 }

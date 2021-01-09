@@ -10,9 +10,9 @@ int Collider::TestCollision(int playerY, Point platformPosition)
 		return 0;
 	switch (direction)
 	{
-		case Up:
+		case Direction::Up:
 			return playerY > platformPosition.y;
-		case Down:
+		case Direction::Down:
 			return playerY < platformPosition.y;
 	}
     return 0;

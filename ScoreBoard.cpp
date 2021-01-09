@@ -3,7 +3,7 @@
 void ScoreBoard::Save(char* name, int score)
 {
 	FILE* file = fopen("scores.txt", "a");
-	char scoreText[256];
+	char scoreText[BUFFSIZE];
 	sprintf(scoreText, "%s %d\n", name, score);
 	fputs(scoreText, file);
 	fclose(file);
@@ -74,15 +74,15 @@ void ScoreBoard::Render(double delta, RenderBatch* batch)
 	char textBuff[BUFFSIZE];
 	int c = 1;
 	sprintf(textBuff, "%s", "Name .................... Score");
-	batch->DrawString(30, 80, textBuff);
+	batch->DrawString(SCOREBOARD_X, SCOREBOARD_Y, textBuff);
 	for (int i = offset; i < lenght + offset; i++,c++) {
 		sprintf(textBuff, "%s", names[i]);
-		batch->DrawString(30, 80 + c * 10, textBuff);
+		batch->DrawString(SCOREBOARD_X, SCOREBOARD_Y + c * LINE_SPACEING, textBuff);
 		sprintf(textBuff, "%d", scores[i]);
-		batch->DrawString(30 + 8 * NAME_MAX_LENGHT, 80 + c * 10, textBuff);
+		batch->DrawString(SCOREBOARD_X + CHAR_WIDTH * NAME_MAX_LENGHT, SCOREBOARD_Y + c * LINE_SPACEING, textBuff);
 	}
 	sprintf(textBuff, "%s", "Arrow Up/Down");
-	batch->DrawString(80, 80 + c * 10, textBuff);
+	batch->DrawString(SCOREBOARD_X, SCOREBOARD_Y + c * LINE_SPACEING, textBuff);
 }
 
 void ScoreBoard::Update(double delta)

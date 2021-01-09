@@ -3,6 +3,10 @@
 #include <cstring>
 #include <cmath>
 #include "Prop.h"
+
+#define SCOREBOARD_X 30
+#define SCOREBOARD_Y 80
+
 class ScoreBoard : public Prop
 {
 public:

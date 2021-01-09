@@ -12,16 +12,16 @@ void ArrowKeyController::Resolve(SDL_Event e)
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym) {
 				case SDLK_UP:
-					player->Move(-10);
+					player->Move(-ABSOLUTE_MOVE_SPEED);
 					break;
 				case SDLK_DOWN:
-					player->Move(10);
+					player->Move(ABSOLUTE_MOVE_SPEED);
 					break;
 				case SDLK_LEFT:
-					scene->Move(-10);
+					scene->Move(-ABSOLUTE_MOVE_SPEED);
 					break;
 				case SDLK_RIGHT:
-					scene->Move(10);
+					scene->Move(ABSOLUTE_MOVE_SPEED);
 					break;
 			}
 			break;

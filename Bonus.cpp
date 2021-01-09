@@ -1,6 +1,6 @@
 #include "Bonus.h"
 
-Bonus::Bonus(Point start) : Platform(start, Point(30, 30))
+Bonus::Bonus(Point start) : Platform(start, Point(BONUS_SIZE, BONUS_SIZE))
 {
 	sprite = SDL_LoadBMP("./fairy.bmp");
 }
@@ -8,7 +8,6 @@ Bonus::Bonus(Point start) : Platform(start, Point(30, 30))
 void Bonus::Render(double delta, RenderBatch* batch)
 {
 	if (!isVisible)return;
-	batch->DrawRectangle(Position.x, Position.y, Width, Height, 0xff0000, 0x00ff00);
-	batch->DrawSurface(sprite, Position.x + 15, Position.y + 15);
+	batch->DrawSurface(sprite, Position.x + BONUS_SIZE /2, Position.y + BONUS_SIZE/2);
 }
 

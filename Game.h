@@ -11,12 +11,28 @@
 #include "Death.h"
 #include "FinalScore.h"
 #include "Scoreboard.h"
+#include <time.h>
+#include "Dolphins.h"
+#include "statics.h"
+
+
+typedef struct {
+	int* quit;
+	int* restartFlag;
+	double delta;
+	RenderBatch* batch;
+}GameDescriptor;
+
 class Game
 {
 public:
 	Game();
 	~Game();
 	void Run();
+	void ScoreLoop(GameDescriptor game);
+	void DeathLoop(GameDescriptor game);
+	void MenuLoop(GameDescriptor game);
+	void GameLoop(Input* defaultInput, Input* arrowInput, int* ddl, Dolphins* dolphins, GameDescriptor game);
 	void SetState(State state);
 	void Init();
 	void Dispose();

@@ -6,6 +6,7 @@
 class ArrowKeyController: public Input
 {
 public:
+	// Arrow key controlls
 	ArrowKeyController(Player* player, Scene* scene);
 	virtual void Resolve(SDL_Event e) override;
 private:

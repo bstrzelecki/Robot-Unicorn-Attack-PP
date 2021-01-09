@@ -13,7 +13,8 @@ Dolphins::~Dolphins()
 void Dolphins::Render(double delta, RenderBatch* batch)
 {
 	for (int i = 0; i < count; i++) {
-		batch->DrawSurface(sprite, commonX - i * offset, 100* SDL_sin(((double)commonX - i * (double)offset)/ 80) + SCREEN_HEIGHT);
+		// curve: y = 100sin(x/80)
+		batch->DrawSurface(sprite, commonX - i * offset, 100 * SDL_sin(((double)commonX - i * (double)offset) / 80) + SCREEN_HEIGHT);
 	}
 }
 

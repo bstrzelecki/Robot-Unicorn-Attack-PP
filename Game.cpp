@@ -1,6 +1,4 @@
 #include "Game.h"
-#include <time.h>
-#include "Dolphins.h"
 
 
 Game::Game()
@@ -12,6 +10,7 @@ Game::~Game()
 {
 	Dispose();
 }
+
 
 void Game::Run()
 {
@@ -31,7 +30,7 @@ void Game::Run()
 
 	Dolphins dolphins;
 
-	int ddl = 0;
+	int dolphinsCount = 0;
 
 	input = defaultInput;
 	int currentInput = 0;
@@ -46,22 +45,153 @@ void Game::Run()
 		// background
 		SDL_FillRect(screen, NULL, 0x000000);
 
-		SDL_Event event;
+
 
 		hud->score = scene->score;
-		
-		if (currentState == State::GameScreen) {
-			while (SDL_PollEvent(&event)) {
-				input->Resolve(event);
-				switch (event.type) {
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym) {
+		GameDescriptor game = {
+				&quit,
+				&restartFlag,
+				delta,
+				&batch
+		};
+		switch (currentState) {
+			case State::GameScreen:
+				GameLoop(defaultInput, arrowInput, &dolphinsCount, &dolphins, game);
+				break;
+			case State::MenuScreen:
+				MenuLoop(game);
+				break;
+			case State::DeathScreen:
+				DeathLoop(game);
+				break;
+			case State::ScoreScreen:
+				ScoreLoop(game);
+				break;
+		}
+
+		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
+		SDL_RenderCopy(renderer, scrtex, NULL, NULL);
+		SDL_RenderPresent(renderer);
+	}
+
+	if (restartFlag == 1) {
+		delete player;
+		delete scene;
+		delete input;
+		Run();
+	}
+}
+
+void Game::ScoreLoop(GameDescriptor game)
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		input->Resolve(event);
+		switch (event.type) {
+		case SDL_KEYDOWN:
+			switch (event.key.keysym.sym) {
+			case SDLK_ESCAPE:
+				*game.quit = 1;
+				break;
+			case SDLK_COMMA:
+				*game.quit = 1;
+				*game.restartFlag = 1;
+				if (!strcmp(name, ""))
+					ScoreBoard::Save(name, totalScore);
+				SetState(State::MenuScreen);
+				break;
+			case SDLK_KP_ENTER:
+				*game.quit = 1;
+				*game.restartFlag = 1;
+				SetState(State::MenuScreen);
+				break;
+			}
+			break;
+		case SDL_TEXTINPUT:
+			// Add backspace support
+			if (nameLenght > NAME_MAX_LENGHT)
+				break;
+			nameLenght++;
+			strcat(name, event.text.text);
+			strcpy(finalScore->name, name);
+			break;
+		}
+	}
+	finalScore->Render(game.delta, game.batch);
+}
+
+void Game::DeathLoop(GameDescriptor game)
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		input->Resolve(event);
+		switch (event.type) {
+		case SDL_KEYDOWN:
+			switch (event.key.keysym.sym) {
+			case SDLK_ESCAPE:
+				*game.quit = 1;
+				break;
+			case SDLK_c:
+				*game.quit = 1;
+				*game.restartFlag = 1;
+				SetState(State::GameScreen);
+				break;
+			case SDLK_m:
+				*game.quit = 1;
+				*game.restartFlag = 1;
+				SetState(State::MenuScreen);
+				break;
+			}
+			break;
+		}
+	}
+	death->Render(game.delta, game.batch);
+}
+
+void Game::MenuLoop(GameDescriptor game)
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		input->Resolve(event);
+		switch (event.type) {
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
 					case SDLK_ESCAPE:
-						quit = 1;
+						*game.quit = 1;
+						break;
+					case SDLK_UP:
+						scoreboard.Move(-1);
+						break;
+					case SDLK_DOWN:
+						scoreboard.Move(1);
 						break;
 					case SDLK_n:
-						quit = 1;
-						restartFlag = 1;
+						*game.quit = 1;
+						*game.restartFlag = 1;
+						SetState(State::GameScreen);
+						break;
+				}
+				break;
+		}
+	}
+	scoreboard.Render(game.delta, game.batch);
+	menu->Render(game.delta, game.batch);
+}
+
+void Game::GameLoop(Input* defaultInput, Input* arrowInput, int* ddl, Dolphins* dolphins, GameDescriptor game)
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		input->Resolve(event);
+		switch (event.type) {
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+					case SDLK_ESCAPE:
+						*game.quit = 1;
+						break;
+					case SDLK_n:
+						*game.quit = 1;
+						*game.restartFlag = 1;
 						SetState(State::MenuScreen);
 						break;
 					case SDLK_d:
@@ -72,135 +202,32 @@ void Game::Run()
 						}
 						else {
 							input = defaultInput;
-							player->SetGravity(2);
-							scene->scrollSpeed = 1;
-						}
-					}
-					break;
-				}
-			}
-			int d = scene->score / 10000;
-			if (d > ddl) {
-				dolphins.Run(d);
-				ddl = d;
-			}
-
-			scene->Update(delta);
-			player->Update(delta);
-			hud->Update(delta);
-			dolphins.Update(delta);
-
-			dolphins.Render(delta, &batch);
-			scene->Render(delta, &batch);
-			player->Render(delta, &batch);
-			hud->Render(delta, &batch);
-
-			if (player->isDead) {
-				SetState(State::DeathScreen);
-			}
-		}
-
-		if (currentState == State::MenuScreen) {
-			while (SDL_PollEvent(&event)) {
-				input->Resolve(event);
-				switch (event.type) {
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym) {
-						case SDLK_ESCAPE:
-							quit = 1;
-							break;
-						case SDLK_UP:
-							scoreboard.Move(-1);
-							break;
-						case SDLK_DOWN:
-							scoreboard.Move(1);
-							break;
-						case SDLK_n:
-							quit = 1;
-							restartFlag = 1;
-							SetState(State::GameScreen);
-							break;
-					}
-					break;
-				}
-			}
-			scoreboard.Render(delta, &batch);
-			menu->Render(delta, &batch);
-		}
-
-
-		if (currentState == State::DeathScreen) {
-			while (SDL_PollEvent(&event)) {
-				input->Resolve(event);
-				switch (event.type) {
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym) {
-						case SDLK_ESCAPE:
-							quit = 1;
-							break;
-						case SDLK_c:
-							quit = 1;
-							restartFlag = 1;
-							SetState(State::GameScreen);
-							break;
-						case SDLK_m:
-							quit = 1;
-							restartFlag = 1;
-							SetState(State::MenuScreen);
-							break;
-					}
-					break;
-				}
-			}
-			death->Render(delta, &batch);
-		}
-
-		if (currentState == State::ScoreScreen) {
-			while (SDL_PollEvent(&event)) {
-				input->Resolve(event);
-				switch (event.type) {
-					case SDL_KEYDOWN:
-						switch (event.key.keysym.sym) {
-							case SDLK_ESCAPE:
-								quit = 1;
-								break;
-							case SDLK_COMMA:
-								quit = 1;
-								restartFlag = 1;
-								if(!strcmp(name, ""))
-									ScoreBoard::Save(name, totalScore);
-								SetState(State::MenuScreen);
-								break;
-							case SDLK_KP_ENTER:
-								quit = 1;
-								restartFlag = 1;
-								SetState(State::MenuScreen);
-								break;
+							player->SetGravity(BASE_GRAVITY);
+							scene->scrollSpeed = BASE_SCROLLSPEED;
 						}
 						break;
-					case SDL_TEXTINPUT:
-						// Add backspace support
-						if (nameLenght > 28)
-							break;
-						nameLenght++;
-						strcat(name, event.text.text);
-						strcpy(finalScore->name, name);
-						break;
 				}
-			}
-			finalScore->Render(delta, &batch);
+				break;
 		}
-
-
-		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
-		SDL_RenderCopy(renderer, scrtex, NULL, NULL);
-		SDL_RenderPresent(renderer);
 	}
-	if (restartFlag == 1) {
-		delete player;
-		delete scene;
-		delete input;
-		Run();
+	int d = scene->score / DOLPHIN_TRIGGER;
+	if (d > *ddl) {
+		dolphins->Run(d);
+		*ddl = d;
+	}
+
+	scene->Update(game.delta);
+	player->Update(game.delta);
+	hud->Update(game.delta);
+	dolphins->Update(game.delta);
+
+	dolphins->Render(game.delta, game.batch);
+	scene->Render(game.delta, game.batch);
+	player->Render(game.delta, game.batch);
+	hud->Render(game.delta, game.batch);
+
+	if (player->isDead) {
+		SetState(State::DeathScreen);
 	}
 }
 
@@ -218,7 +245,7 @@ void Game::SetState(State state)
 			name[0] = '\0';
 			finalScore->name[0] = '\n';
 			totalScore = 0;
-			lives = 3;
+			lives = STARTING_LIVES;
 			break;
 		case State::DeathScreen:
 			lives--;
@@ -298,6 +325,11 @@ void Game::Init()
 }
 void Game::Dispose()
 {
+	delete menu;
+	delete death;
+	delete finalScore;
+	delete hud;
+
 	delete player;
 	delete scene;
 	delete input;

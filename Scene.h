@@ -12,6 +12,7 @@ class Scene: public Prop
 public:
 	Scene(Player* player);
 	~Scene();
+	// X motion
 	void Move(int delta);
 	virtual void Render(double delta, RenderBatch* batch) override;
 	virtual void Update(double delta) override;
@@ -20,6 +21,8 @@ public:
 	int scrollSpeed = 5;
 private:
 	int deathFlag = 0;
+	void MovePickups(double delta);
+	void DeadlyCollisions(int i);
 	void AddBonusPoints();
 	void AddStarPoints();
 	int loopWidth;

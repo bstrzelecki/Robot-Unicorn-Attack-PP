@@ -1,6 +1,6 @@
 #include "Star.h"
 
-Star::Star(Point start) : Platform(start, Point(115, 100))
+Star::Star(Point start) : Platform(start, Point(STAR_WIDTH, STAR_HEIGHT))
 {
 	sprite = SDL_LoadBMP("./star.bmp");
 }
@@ -8,6 +8,5 @@ Star::Star(Point start) : Platform(start, Point(115, 100))
 void Star::Render(double delta, RenderBatch* batch)
 {
 	if (!isVisible)return;
-	batch->DrawRectangle(Position.x, Position.y, Width, Height, 0xff0000, 0x00ff00);
 	batch->DrawSurface(sprite, Position.x + Width/2, Position.y + Height/2);
 }
