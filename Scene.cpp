@@ -1,11 +1,10 @@
 #include "Scene.h"
 
 // Scene file
-// p? - deafult platform (x y width height)
+// p? - deafult platform (x y width height randomnessGroup randomnessOffset bonusBufferSize starBufferSize)
 // b! - bonus (x y 0 0)
 // s! - star (x y 0 0)
-// c? - curved platform (x y width height a b c)
-
+// c? - curved platform (x y width height a b c randomnessGroup randomnessOffset bonusBufferSize starBufferSize)
 
 
 Scene::Scene(Player* player)
