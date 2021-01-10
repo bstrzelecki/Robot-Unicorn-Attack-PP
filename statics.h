@@ -3,7 +3,7 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-#define SCENE_HEIGHT 1440
+#define SCENE_HEIGHT 70
 #define MAX_OFFSET 240
 
 #define XPOSITION 85
@@ -30,6 +30,7 @@
 #define LINE_SPACEING 10
 
 #define SPAWN_CHANCE_OFFSET 1
+#define GROUP_SIZE 6
 
 #define LIVES_DISPLAY_Y 25
 #define STARTING_LIVES 3

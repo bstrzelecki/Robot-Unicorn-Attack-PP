@@ -93,10 +93,10 @@ void Game::ScoreLoop(GameDescriptor game)
 			case SDLK_ESCAPE:
 				*game.quit = 1;
 				break;
-			case SDLK_KP_ENTER:
+			case SDLK_SPACE:
 				*game.quit = 1;
 				*game.restartFlag = 1;
-				if (!strcmp(name, ""))
+				if (strcmp(name, "") != 0)
 					ScoreBoard::Save(name, totalScore);
 				SetState(State::MenuScreen);
 				break;
@@ -221,10 +221,10 @@ void Game::GameLoop(Input* defaultInput, Input* arrowInput, int* ddl, Dolphins* 
 	hud->Update(game.delta);
 	dolphins->Update(game.delta);
 
-	dolphins->Render(game.delta, game.batch);
 	scene->Render(game.delta, game.batch);
 	player->Render(game.delta, game.batch);
 	hud->Render(game.delta, game.batch);
+	dolphins->Render(game.delta, game.batch);
 
 	if (player->isDead) {
 		SetState(State::DeathScreen);

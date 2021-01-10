@@ -22,9 +22,9 @@ public:
 	// 0 - when completed animation stays at final frame
 	int loop = 1;
 	double duration = 1;
+	double progress = 0;
 private:
 	int frameCount;
 	SDL_Surface** frames;
-	double progress = 0;
 };
 

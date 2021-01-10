@@ -23,6 +23,8 @@
     <ClCompile Include="ArrowKeyController.cpp" />
     <ClCompile Include="Bonus.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CurvedCollider.cpp" />
+    <ClCompile Include="CurvedPlatform.cpp" />
     <ClCompile Include="Death.cpp" />
     <ClCompile Include="Dolphins.cpp" />
     <ClCompile Include="FinalScore.cpp" />
@@ -48,6 +50,8 @@
     <ClInclude Include="ArrowKeyController.h" />
     <ClInclude Include="Bonus.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="CurvedCollider.h" />
+    <ClInclude Include="CurvedPlatform.h" />
     <ClInclude Include="Death.h" />
     <ClInclude Include="Dolphins.h" />
     <ClInclude Include="FinalScore.h" />

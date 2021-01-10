@@ -28,11 +28,6 @@ void Player::Move(int deltaY)
 	moveBuffer += deltaY;
 }
 void Player::Render(double delta, RenderBatch* batch) {
-	// REMOVE
-	batch->DrawPixel(bottomCollision.x, bottomCollision.y, 0xFF0000);
-	batch->DrawPixel(bottomCollisionThreshold.x, bottomCollisionThreshold.y, 0xFF00FF);
-	batch->DrawPixel(topCollision.x, topCollision.y, 0xFF0000);
-	batch->DrawPixel(topCollisionThreshold.x, topCollisionThreshold.y, 0xFFFF00);
 
 	int xOffset = 0;
 	SDL_Surface* sp = run->GetCurrent();
@@ -131,6 +126,7 @@ void Player::Jump()
 	if (jumpCount > 0 && !isJumping) {
 		smallJump = MINUMUM_JUMP_DURATION;
 		isJumping = 1;
+		isFalling = 1;
 		currentJump = 1;
 		jumpCount--;
 	}

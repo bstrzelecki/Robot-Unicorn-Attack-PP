@@ -40,12 +40,14 @@ void Platform::AddBonus(Platform* bonus)
 {
 	bonuses[bonusCount] = bonus;
 	bonusCount++;
+	bonus->isVisible = 0;
 }
 
 void Platform::AddStar(Platform* star)
 {
 	stars[starCount] = star;
 	starCount++;
+	star->isVisible = 0;
 }
 
 void Platform::Loop(int width)
@@ -97,6 +99,26 @@ void Platform::Update(double delta)
 {
 	UpdatePickup(bonuses, bonusCount);
 	UpdatePickup(stars, starCount);
+}
+
+void Platform::SetBuffers(int bonus, int star)
+{
+	for (int i = 0; i < bonusCount; i++) {
+		delete bonuses[i];
+	}
+	for (int i = 0; i < starCount; i++) {
+		delete stars[i];
+	}
+	delete bonuses;
+	delete stars;
+
+	bonuses = new Platform * [bonus];
+	stars = new Platform * [star];
+}
+
+int Platform::GetY()
+{
+	return Position.y;
 }
 
 void Platform::UpdatePickup(Platform** list, int count)

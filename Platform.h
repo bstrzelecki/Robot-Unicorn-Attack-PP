@@ -25,15 +25,19 @@ public:
 	void Randomize();
 	virtual void Render(double delta, RenderBatch* batch) override;
 	virtual void Update(double delta) override;
+	void SetBuffers(int bonus, int star);
+	virtual int GetY();
 	Platform** bonuses;
 	Platform** stars;
 	int isVisible = 1;
 	int starCount = 0;
 	int bonusCount = 0;
+	int randomOffset = 0;
 private:
 	void UpdatePickup(Platform** list, int count);
 	void ResetPickups(Platform** list, int count);
 	void DrawPickup(Platform** list, int count, double delta, RenderBatch* batch);
+protected:
 	Collider* topCollider;
 	Collider* bottomCollider;
 };
