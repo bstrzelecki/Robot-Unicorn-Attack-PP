@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderBatch.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Bonus.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="CurvedCollider.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="CurvedPlatform.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Dolphins.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalScore.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Death.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Star.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreBoard.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowKeyController.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ZXController.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Prop.h" />
+    <ClInclude Include="RenderBatch.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="statics.h" />
+    <ClInclude Include="Bonus.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Death.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalScore.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CurvedCollider.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="CurvedPlatform.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Dolphins.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Star.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreBoard.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowKeyController.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ZXController.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Desktop\unicorn\player.bmp" />
+    <Image Include="cs8x8.bmp" />
+    <Image Include="eti.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="World">
+      <UniqueIdentifier>{ca4f89bd-8ea3-44a9-be78-32d206c54ad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{9e2620e4-2511-407b-bc96-c3230c7c7d4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{5d7cb96a-1605-4a46-915d-342b1eb376f5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
